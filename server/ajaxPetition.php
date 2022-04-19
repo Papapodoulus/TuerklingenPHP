@@ -10,7 +10,29 @@ switch ($_POST['type']) {
         echo $json;
         break;
     case 'delete':
-        echo 'delete';
+        $sort = $_POST['sort'];
+
+        if ($sort == 'tablets') {
+            $id = $_POST['id'];
+            $tablet = $_POST['tablet'];
+            $raum = $_POST['raum'];
+            $json = $conn->deleteTablet($id, $tablet, $raum);
+            print_r($json);
+        } else if ($sort == 'raeume') {
+            $id = $_POST['id'];
+            $idFirma = $_POST['idFirma'];
+            $raeume = $_POST['raeume'];
+            $json = $conn->deleteRaum($id, $raeume, $idFirma);
+            print_r($json);
+        } else if ($sort == 'firmas') {
+            $id = $_POST['id'];
+            $firma = $_POST['firma'];
+            $json = $conn->deleteFirma($id, $firma);
+            print_r($json);
+        } else {
+            return false;
+        }
+
         break;
     case 'alter':
         echo 'alter';
