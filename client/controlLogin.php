@@ -25,22 +25,14 @@
     require_once('../server/mysql.php');
 
     $conn = new ConnectionSQL;
-    $username = "";
-    $password = "";
-    $result = "";
     $id = "";
 
 
-    if (!isset($_GET['id']) && isset($_POST['uname']) && isset($_POST['password'])) {
-        $username = $_POST['uname'];
-        $password = $_POST['password'];
-
-        $result = (int) $conn->istAdmin($username, $password);
-    } else if (isset($_GET['id'])) {
+    if (isset($_GET['id'])) {
         $id = $_GET['id'];
     }
 
-    if ($result == 0 && $id == "") {
+    if (!isset($_COOKIE['login']) && $id == "") {
         echo 'wer bist du?';
     } else {
     ?>
@@ -48,7 +40,7 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <h1>Guten Tag <?php echo $username ?></h1>
+        <h1>Guten Tag</h1>
         <h2>Bearbeiten</h2>
 
         <button id="firmas" value="firmas" onclick="location.replace('/timbrePHP/client/controlLogin.php?id=firmas')">Firmas</button>
@@ -87,15 +79,21 @@
                 <div id="info" style="display:none">
                     <?php
 
-
                     $tmp = getKeys($newarray);
+                    $count = 0;
                     foreach ($tmp as $key) {
-                        echo $key;
-                        echo "<input type='text' id='$key' required></input> <br>";
+                        if ($count === 0) {
+                            echo $key;
+                            echo "<input type='text' id='$key' disabled required></input> <br>";
+                            $count++;
+                        } else {
+                            echo $key;
+                            echo "<input type='text' id='$key' required></input> <br>";
+                        }
                     }
 
                     ?>
-                    <button id="alter">ALTER</button>
+                    <button id="update">UPDATE</button>
                     <button id="delete">DELETE</button>
                 </div>
         <?php

@@ -23,6 +23,41 @@ window.addEventListener('load', () => {
     $('#delete').click(function () {
         var url = window.location.href;
         var sort = "";
+        var id = "";
+        if (url.endsWith('tablets')) {
+            sort = 'tablets';
+            id = $('#Id').val();
+        } else if (url.endsWith('raeume')) {
+            sort = 'raeume';
+            id = $('#Id').val();
+        } else if (url.endsWith('firmas')) {
+            sort = 'firmas';
+            id = $('#Id').val();
+        }
+
+
+        $.ajax({
+            url: "../server/ajaxPetition.php",
+            data: {
+                type: "delete",
+                sort: sort,
+                id: id,
+            },
+            type: "post",
+            success: function (json) {
+                console.log(json);
+            },
+            error: function (err) {
+                console.log('Error: ' + err);
+            }
+        });
+        setTimeout(() => location.replace(url), 500);
+        ;
+    });
+
+    $('#update').click(function () {
+        var url = window.location.href;
+        var sort = "";
         if (url.endsWith('tablets')) {
             sort = 'tablets';
             var id = $('#Id').val();
@@ -31,7 +66,7 @@ window.addEventListener('load', () => {
             $.ajax({
                 url: "../server/ajaxPetition.php",
                 data: {
-                    type: "delete",
+                    type: "update",
                     sort: sort,
                     id: id,
                     tablet: tablet,
@@ -48,13 +83,13 @@ window.addEventListener('load', () => {
             });
         } else if (url.endsWith('raeume')) {
             sort = 'raeume';
-            var id = $('#ID').val();
+            var id = $('#Id').val();
             var raeume = $('#Name').val();
             var idFirma = $('#Id_firma').val();
             $.ajax({
                 url: "../server/ajaxPetition.php",
                 data: {
-                    type: "delete",
+                    type: "update",
                     sort: sort,
                     id: id,
                     raeume: raeume,
@@ -72,12 +107,12 @@ window.addEventListener('load', () => {
 
         } else if (url.endsWith('firmas')) {
             sort = 'firmas';
-            var id = $('#ID').val();
+            var id = $('#Id').val();
             var firma = $('#Firma').val();
             $.ajax({
                 url: "../server/ajaxPetition.php",
                 data: {
-                    type: "delete",
+                    type: "update",
                     sort: sort,
                     id: id,
                     firma: firma,
@@ -92,22 +127,7 @@ window.addEventListener('load', () => {
             });
         }
 
+        setTimeout(() => location.replace(url), 500);
 
-    });
-
-    $('#alter').click(function () {
-        $.ajax({
-            url: "../server/ajaxPetition.php",
-            data: {
-                type: "alter",
-            },
-            type: "post",
-            success: function (json) {
-                console.log(json);
-            },
-            error: function (err) {
-                console.log('Error: ' + err);
-            }
-        });
     });
 });

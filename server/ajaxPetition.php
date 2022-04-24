@@ -5,36 +5,30 @@ $conn = new ConnectionSQL;
 
 switch ($_POST['type']) {
     case 'istMeinFirma':
-        $raum = $_POST['data'];
-        $json = $conn->istMeinFirma($raum);
+        $json = $conn->istMeinFirma($_POST['data']);
+        echo $json;
+        break;
+    case 'istAdmin':
+        $json = $conn->istAdmin($_POST['uname'], $_POST['password']);
         echo $json;
         break;
     case 'delete':
+        $conn->deteleRow($_POST['id'], $_POST['sort']);
+        break;
+    case 'update':
         $sort = $_POST['sort'];
 
-        if ($sort == 'tablets') {
-            $id = $_POST['id'];
-            $tablet = $_POST['tablet'];
-            $raum = $_POST['raum'];
-            $json = $conn->deleteTablet($id, $tablet, $raum);
-            print_r($json);
-        } else if ($sort == 'raeume') {
-            $id = $_POST['id'];
-            $idFirma = $_POST['idFirma'];
-            $raeume = $_POST['raeume'];
-            $json = $conn->deleteRaum($id, $raeume, $idFirma);
-            print_r($json);
-        } else if ($sort == 'firmas') {
-            $id = $_POST['id'];
-            $firma = $_POST['firma'];
-            $json = $conn->deleteFirma($id, $firma);
-            print_r($json);
-        } else {
-            return false;
+        switch ($sort) {
+            case 'tablets':
+                $conn->updateTablet($_POST['id'], $_POST['tablet'], $_POST['raum']);
+                break;
+            case 'raeume':
+                $conn->updateRaeume($_POST['id'], $_POST['raeume'], $_POST['idFirma']);
+                break;
+            case 'firmas':
+                $conn->updateFirmas($_POST['id'], $_POST['firma']);
+                break;
         }
 
-        break;
-    case 'alter':
-        echo 'alter';
         break;
 };

@@ -16,20 +16,16 @@ class ConnectionSQL
 
     public function getFirmas()
     {
-        $sql = 'SELECT * 
-        from firmas';
+        $sql = 'SELECT * from firmas';
         foreach ($this->pdo->query($sql) as $row) {
-
             echo '<button type="button" id="' . $row['Firma'] . '" value="' . $row['Firma'] . '">' . $row['Firma'] . '</button>';
         }
     }
 
     public function getTablets()
     {
-        $sql = 'SELECT * 
-        from tablets';
+        $sql = 'SELECT * from tablets';
         foreach ($this->pdo->query($sql) as $row) {
-
             echo '<button type="button" class="boton" id="' . $row['Tablet'] . '" value="' . $row['Tablet'] . '">' . $row['Tablet'] . '</button>';
         }
     }
@@ -54,7 +50,7 @@ class ConnectionSQL
         where username='$uname' and password='$password');";
 
         foreach ($this->pdo->query($sql) as $row) {
-            return $row[0];
+            echo $row[0];
         }
     }
 
@@ -67,9 +63,30 @@ class ConnectionSQL
         return $resultado;
     }
 
-    public function deleteTablet($id, $tablet, $raum)
+    public function deteleRow($id, $sort)
     {
-        $sql = "DELETE FROM tablets WHERE Id=$id AND Tablet='$tablet' AND Raum=$raum;";
+        $sql = "";
+
+        switch ($sort) {
+            case 'tablets':
+                $sql = "DELETE FROM tablets WHERE Id=$id;";
+                break;
+            case 'raeume':
+                if ($this->changeFKTablet($id)) {
+                    $sql = "DELETE FROM raeume WHERE ID=$id;";
+                } else {
+                    echo "FATAL ERROR";
+                }
+                break;
+            case 'firmas':
+                if ($this->changeFKRaum($id)) {
+                    $sql = "DELETE FROM firmas WHERE ID=$id;";
+                } else {
+                    echo 'FATAL ERROR';
+                }
+                break;
+        }
+
         $statament = $this->pdo->prepare($sql);
 
         $statament->execute();
@@ -82,43 +99,51 @@ class ConnectionSQL
             return 'true';
         }
     }
-    public function deleteRaum($id, $raeume, $idFirma)
+
+    public function updateFirmas($id, $firma)
     {
+        $sql = "UPDATE firmas SET Firma='$firma' WHERE Id=$id;";
+        $statament = $this->pdo->prepare($sql);
 
-        if ($this->changeFKTablet($id)) {
-            $sql = "DELETE FROM raeume WHERE ID=$id AND Name='$raeume' AND Id_firma=$idFirma;";
-            $statament = $this->pdo->prepare($sql);
+        $statament->execute();
 
-            $statament->execute();
+        $del = $statament->rowCount();
 
-            $del = $statament->rowCount();
-
-            if ($del == 0) {
-                return 'false';
-            } else {
-                return 'true';
-            }
+        if ($del == 0) {
+            return 'false';
         } else {
-            echo 'FATAL ERROR';
+            return 'true';
         }
     }
-    public function deleteFirma($id, $firma)
-    {
-        if ($this->changeFKRaum($id)) {
-            $sql = "DELETE FROM firmas WHERE ID=$id AND Firma='$firma';";
-            $statament = $this->pdo->prepare($sql);
 
-            $statament->execute();
+    public function updateRaeume($id, $name, $idFirma){
+        $sql = "UPDATE raeume SET Name='$name', Id_firma=$idFirma WHERE Id=$id;";
+        $statament = $this->pdo->prepare($sql);
 
-            $del = $statament->rowCount();
+        $statament->execute();
 
-            if ($del == 0) {
-                return 'false';
-            } else {
-                return 'true';
-            }
+        $del = $statament->rowCount();
+
+        if ($del == 0) {
+            return 'false';
         } else {
-            echo 'FATAL ERROR';
+            return 'true';
+        }
+    }
+
+    public function updateTablet($id, $tablet, $raum)
+    {
+        $sql = "UPDATE tablets SET Tablet='$tablet', Raum=$raum WHERE Id=$id;";
+        $statament = $this->pdo->prepare($sql);
+
+        $statament->execute();
+
+        $del = $statament->rowCount();
+
+        if ($del == 0) {
+            return 'false';
+        } else {
+            return 'true';
         }
     }
 
@@ -144,5 +169,4 @@ class ConnectionSQL
             return $ex;
         }
     }
-
 }

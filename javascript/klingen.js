@@ -17,18 +17,9 @@ window.addEventListener('load', () => {
     };
 
     //Message send button
-    $('#firma1').click(function () {
-        send_message('firma1');
+    $('button').click(function(ev){
+        send_message(ev.target.value);
     });
-
-    $('#firma2').click(function () {
-        send_message('firma2');
-    });
-
-    $('#firma3').click(function () {
-        send_message('firma3');
-    });
-
 
     //Send message
     function send_message(firma) {

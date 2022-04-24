@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-04-2022 a las 09:35:53
+-- Tiempo de generación: 24-04-2022 a las 03:06:32
 -- Versión del servidor: 10.4.21-MariaDB
 -- Versión de PHP: 8.0.10
 
@@ -46,7 +46,7 @@ INSERT INTO `admin` (`username`, `password`) VALUES
 --
 
 CREATE TABLE `firmas` (
-  `ID` int(11) NOT NULL,
+  `Id` int(11) NOT NULL,
   `Firma` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -54,7 +54,7 @@ CREATE TABLE `firmas` (
 -- Volcado de datos para la tabla `firmas`
 --
 
-INSERT INTO `firmas` (`ID`, `Firma`) VALUES
+INSERT INTO `firmas` (`Id`, `Firma`) VALUES
 (1, 'firma1'),
 (2, 'firma2'),
 (3, 'firma3');
@@ -66,7 +66,7 @@ INSERT INTO `firmas` (`ID`, `Firma`) VALUES
 --
 
 CREATE TABLE `raeume` (
-  `ID` int(11) NOT NULL,
+  `Id` int(11) NOT NULL,
   `Name` varchar(255) DEFAULT NULL,
   `Id_firma` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -75,7 +75,7 @@ CREATE TABLE `raeume` (
 -- Volcado de datos para la tabla `raeume`
 --
 
-INSERT INTO `raeume` (`ID`, `Name`, `Id_firma`) VALUES
+INSERT INTO `raeume` (`Id`, `Name`, `Id_firma`) VALUES
 (1, 'raum1', 1),
 (2, 'raum2', 1),
 (3, 'raum3', 1),
@@ -117,13 +117,13 @@ INSERT INTO `tablets` (`Id`, `Tablet`, `Raum`) VALUES
 -- Indices de la tabla `firmas`
 --
 ALTER TABLE `firmas`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`Id`);
 
 --
 -- Indices de la tabla `raeume`
 --
 ALTER TABLE `raeume`
-  ADD PRIMARY KEY (`ID`),
+  ADD PRIMARY KEY (`Id`),
   ADD KEY `Id_firma` (`Id_firma`);
 
 --
@@ -136,18 +136,6 @@ ALTER TABLE `tablets`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
-
---
--- AUTO_INCREMENT de la tabla `firmas`
---
-ALTER TABLE `firmas`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de la tabla `raeume`
---
-ALTER TABLE `raeume`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `tablets`
